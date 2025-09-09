@@ -41,7 +41,9 @@ describe('Abrigo de Animais', () => {
   });
 
   test('Deve encontrar pessoa para o loco compartilhando brinquedos', () => {
-    const resultado = new AbrigoAnimais().encontraPessoas('RATO,BOLA', 'CAIXA,RATO,SKATE,NOVELO', 'Zero,Bola,Loco,Rex');
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'RATO,BOLA', 'CAIXA,RATO,SKATE,NOVELO', 'Zero,Bola,Loco,Rex'
+    );
 
     expect(resultado.lista[0]).toBe('Bola - pessoa 2');
     expect(resultado.lista[1]).toBe('Loco - pessoa 2');
@@ -49,5 +51,20 @@ describe('Abrigo de Animais', () => {
     expect(resultado.lista[3]).toBe('Zero - pessoa 1');
     expect(resultado.lista.length).toBe(4);
     expect(resultado.erro).toBeFalsy();
-  })
+  });
+
+  test('Deve respeitar o limite de 3 animais por pessoa', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'SKATE,LASER,RATO,BOLA,CAIXA,NOVELO',
+      'CAIXA',
+      'Rex,Bebe,Bola,Loco'
+    );
+
+    expect(resultado.lista[0]).toBe('Bebe - pessoa 1');
+    expect(resultado.lista[1]).toBe('Bola - pessoa 1');
+    expect(resultado.lista[2]).toBe('Loco - abrigo');
+    expect(resultado.lista[3]).toBe('Rex - pessoa 1');
+    expect(resultado.lista.length).toBe(4);
+    expect(resultado.erro).toBeFalsy();
+  });
 });
